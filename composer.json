@@ -1,0 +1,20 @@
+{
+    "name": "marek/location_api",
+    "type": "project",
+    "require": {
+        "php": "^7.2",
+        "doctrine/orm": "^2.7",
+        "ext-json": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Marek Witkowski",
+            "email": "witkowski.marekk@gmail.com"
+        }
+    ]
+}
