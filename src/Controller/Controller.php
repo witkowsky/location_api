@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Exception;
 use JsonSerializable;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -24,7 +25,11 @@ abstract class Controller
      */
     public function __invoke(ServerRequestInterface $request): ResponseInterface
     {
-        return $this->action($request);
+        try {
+            return $this->action($request);
+        } catch (Exception $exception) {
+            return $this->createErrorApiResponse($exception->getMessage(),500);
+        }
     }
 
     /**

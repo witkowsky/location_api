@@ -4,15 +4,16 @@ declare(strict_types=1);
 namespace App\Controller\Location;
 
 use App\Controller\Controller;
+use App\Service\LocationFinderInterface;
 use App\Service\LocationServiceInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Class CreateController
+ * Class UpdateController
  * @package App\Controller\Location
  */
-class CreateController extends Controller
+class UpdateController extends Controller
 {
     /**
      * @var LocationServiceInterface
@@ -20,12 +21,21 @@ class CreateController extends Controller
     private $locationService;
 
     /**
+     * @var LocationFinderInterface
+     */
+    private $locationFinder;
+
+    /**
      * RemoveController constructor.
      * @param LocationServiceInterface $locationService
+     * @param LocationFinderInterface $locationFinder
      */
-    public function __construct(LocationServiceInterface $locationService)
-    {
+    public function __construct(
+        LocationServiceInterface $locationService,
+        LocationFinderInterface $locationFinder
+    ) {
         $this->locationService = $locationService;
+        $this->locationFinder = $locationFinder;
     }
 
     /**
@@ -34,14 +44,16 @@ class CreateController extends Controller
      */
     public function action(ServerRequestInterface $request): ResponseInterface
     {
+        $id = (int) $request->getAttribute('id');
         $body = $request->getParsedBody();
         $name = $body['name'];
         $address = $body['address'];
         $latitude = (float) $body['latitude'];
         $longitude = (float) $body['longitude'];
 
-        $id = $this->locationService->createLocation($name, $address, $latitude, $longitude);
+        $this->locationService->updateLocation($id, $name, $address, $latitude, $longitude);
 
-        return $this->createApiResponse(['id' => $id], 200);
+        $dto = $this->locationFinder->findById($id);
+        return $this->createApiResponse($dto, 200);
     }
 }

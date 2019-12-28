@@ -7,7 +7,6 @@ use App\Controller\Controller;
 use App\Service\LocationFinderInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Zend\Diactoros\Response;
 
 /**
  * Class FindByIdController

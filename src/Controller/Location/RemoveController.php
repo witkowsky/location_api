@@ -7,7 +7,6 @@ use App\Controller\Controller;
 use App\Service\LocationServiceInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Zend\Diactoros\Response;
 
 /**
  * Class RemoveController
@@ -36,11 +35,7 @@ class RemoveController extends Controller
     public function action(ServerRequestInterface $request): ResponseInterface
     {
         $id = (int) $request->getAttribute('id');
-        try {
-            $this->locationService->removeLocation($id);
-        } catch (\Exception $exception) {
-            return $this->createErrorApiResponse($exception->getMessage(), 500);
-        }
+        $this->locationService->removeLocation($id);
 
         return $this->createApiResponse([], 200);
     }
