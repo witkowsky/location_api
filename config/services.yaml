@@ -12,5 +12,8 @@ services:
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
     App\:
-        resource: 'src/*'
-        exclude: 'src/{Entity,Dto}'
+        resource: '../src/*'
+        exclude: '../src/{Entity,Dto}'
+
+    App\Controller\Location\FindByIdController:
+        public: true

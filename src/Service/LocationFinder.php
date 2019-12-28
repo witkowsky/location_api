@@ -24,6 +24,19 @@ class LocationFinder implements LocationFinderInterface
     private $locationRepository;
 
     /**
+     * LocationFinder constructor.
+     * @param LocationDtoBuilderInterface $locationDtoBuilder
+     * @param LocationRepositoryInterface $locationRepository
+     */
+    public function __construct(
+        LocationDtoBuilderInterface $locationDtoBuilder,
+        LocationRepositoryInterface $locationRepository
+    ) {
+        $this->locationDtoBuilder = $locationDtoBuilder;
+        $this->locationRepository = $locationRepository;
+    }
+
+    /**
      * @param int $id
      *
      * @return Location|null

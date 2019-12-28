@@ -11,7 +11,7 @@ use App\Repository\LocationRepositoryInterface;
 use App\Repository\LocationRepository;
 use App\Entity\Location;
 
-require_once "vendor/autoload.php";
+require_once dirname(__DIR__) . "/vendor/autoload.php";
 
 /*
  * Doctrine
@@ -21,7 +21,7 @@ $proxyDir = null;
 $cache = null;
 $useSimpleAnnotationReader = false;
 $config = Setup::createAnnotationMetadataConfiguration(
-    array(__DIR__."/src/Entity"),
+    array(dirname(__DIR__) . "/src/Entity"),
     $isDevMode,
     $proxyDir,
     $cache,
@@ -31,7 +31,7 @@ $config = Setup::createAnnotationMetadataConfiguration(
 // database configuration parameters
 $conn = array(
     'driver' => 'pdo_sqlite',
-    'path' => __DIR__ . '/db.sqlite',
+    'path' => dirname(__DIR__) . '/db.sqlite',
 );
 
 // obtaining the entity manager
