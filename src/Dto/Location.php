@@ -68,6 +68,4 @@ class Location implements JsonSerializable
             "longitude" => $this->longitude,
         ];
     }
-
-
 }
