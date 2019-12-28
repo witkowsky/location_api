@@ -10,7 +10,7 @@ use App\Repository\LocationRepositoryInterface;
  * Class LocationService
  * @package App\Service
  */
-class LocationService
+class LocationService implements LocationServiceInterface
 {
     /**
      * @var LocationRepositoryInterface
