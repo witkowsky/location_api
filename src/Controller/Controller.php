@@ -1,0 +1,70 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Controller;
+
+use JsonSerializable;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Zend\Diactoros\Response;
+
+/**
+ * Class Controller
+ * @package App\Controller
+ */
+abstract class Controller
+{
+    abstract public function action(ServerRequestInterface $request): ResponseInterface;
+
+    /**
+     * @param ServerRequestInterface $request
+     *
+     * @return ResponseInterface
+     */
+    public function __invoke(ServerRequestInterface $request): ResponseInterface
+    {
+        return $this->action($request);
+    }
+
+    /**
+     * @param JsonSerializable $data
+     * @param int $statusCode
+     *
+     * @return ResponseInterface
+     */
+    protected function createApiResponse($data, int $statusCode): ResponseInterface
+    {
+        return $this->createJsonResponse(
+            [
+                'data' => $data,
+                'error' => null
+            ],
+            $statusCode
+        );
+    }
+
+    /**
+     * @param string $errorMessage
+     * @param int $statusCode
+     *
+     * @return ResponseInterface
+     */
+    protected function createErrorApiResponse(string $errorMessage, int $statusCode): ResponseInterface
+    {
+        return $this->createJsonResponse(['error' => $errorMessage], $statusCode);
+    }
+
+    /**
+     * @param array $body
+     * @param int $statusCode
+     * @return ResponseInterface
+     */
+    private function createJsonResponse(array $body, int $statusCode): ResponseInterface
+    {
+        $headers = ['Content-Type' => 'application/json'];
+        $response = new Response('php://memory', $statusCode, $headers);
+        $response->getBody()->write(json_encode($body));
+        return $response;
+    }
+}

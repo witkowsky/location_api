@@ -9,13 +9,17 @@ use FastRoute\RouteCollector;
 use Middlewares\FastRoute;
 use Middlewares\RequestHandler;
 use Narrowspark\HttpEmitter\SapiEmitter;
-use App\Controller\Location\FindByIdController;
 use Zend\Diactoros\ServerRequestFactory;
 use Relay\Relay;
+use App\Controller\Location\FindByIdController;
+use App\Controller\Location\RemoveController;
+use App\Controller\Location\CreateController;
 
 //Routes
 $routes = simpleDispatcher(function (RouteCollector $r) {
+    $r->post('/location', CreateController::class);
     $r->get('/location/{id}', FindByIdController::class);
+    $r->delete('/location/{id}', RemoveController::class);
 });
 $middlewareQueue[] = new FastRoute($routes);
 $middlewareQueue[] = new RequestHandler($containerBuilder);

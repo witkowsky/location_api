@@ -17,3 +17,9 @@ services:
 
     App\Controller\Location\FindByIdController:
         public: true
+
+    App\Controller\Location\RemoveController:
+        public: true
+
+    App\Controller\Location\CreateController:
+        public: true

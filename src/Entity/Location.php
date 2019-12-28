@@ -45,7 +45,7 @@ class Location
     /**
      * @var float
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="float")
      */
     private $longitude;
 
