@@ -6,6 +6,7 @@ namespace App\Repository;
 
 use App\Entity\Location;
 use Doctrine\ORM\EntityRepository;
+use InvalidArgumentException;
 
 /**
  * Class LocationRepository
@@ -32,5 +33,22 @@ class LocationRepository extends EntityRepository implements LocationRepositoryI
     {
         $this->getEntityManager()->persist($location);
         $this->getEntityManager()->flush($location);
+    }
+
+    /**
+     * @param int $id
+     *
+     * @return void
+     */
+    public function remove(int $id): void
+    {
+        $location = $this->findById($id);
+
+        if (!$location) {
+            throw new InvalidArgumentException(sprintf('Location %s not found.', $id));
+        }
+
+        $this->getEntityManager()->remove($location);
+        $this->getEntityManager()->flush();
     }
 }

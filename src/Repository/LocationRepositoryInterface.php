@@ -25,4 +25,11 @@ interface LocationRepositoryInterface
      * @return void
      */
     public function flush(Location $location): void;
+
+    /**
+     * @param int $id
+     *
+     * @return void
+     */
+    public function remove(int $id): void;
 }
