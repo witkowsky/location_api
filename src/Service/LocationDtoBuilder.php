@@ -35,7 +35,8 @@ class LocationDtoBuilder implements LocationDtoBuilderInterface
             $location->getName(),
             $location->getAddress(),
             $location->getLatitude(),
-            $location->getLongitude()
+            $location->getLongitude(),
+            $location->getDistance()
         );
     }
 }

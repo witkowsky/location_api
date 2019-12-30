@@ -38,6 +38,11 @@ class Location implements JsonSerializable
     private $longitude;
 
     /**
+     * @var float
+     */
+    private $distance;
+
+    /**
      * Location constructor.
      *
      * @param int $id
@@ -45,14 +50,22 @@ class Location implements JsonSerializable
      * @param string $address
      * @param float $latitude
      * @param float $longitude
+     * @param float $distance
      */
-    public function __construct(int $id, string $name, string $address, float $latitude, float $longitude)
-    {
+    public function __construct(
+        int $id,
+        string $name,
+        string $address,
+        float $latitude,
+        float $longitude,
+        float $distance
+    ) {
         $this->id = $id;
         $this->name = $name;
         $this->address = $address;
         $this->latitude = $latitude;
         $this->longitude = $longitude;
+        $this->distance = $distance;
     }
 
     /**
@@ -66,6 +79,7 @@ class Location implements JsonSerializable
             "address" => $this->address,
             "latitude" => $this->latitude,
             "longitude" => $this->longitude,
+            "distance" => $this->distance
         ];
     }
 }

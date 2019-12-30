@@ -44,7 +44,7 @@ class IndexController extends Controller
                         <button v-on:click="filterLocations">Filter</button>
                     </td>
                     <h3>Locations</h3>
-                    <table>
+                    <table class="table">
                         <thead>
                             <tr>
                                 <td>id</td>
@@ -52,6 +52,7 @@ class IndexController extends Controller
                                 <td>address</td>
                                 <td>latitude</td>
                                 <td>longitude</td>
+                                <td>distance to home.pl</td>
                                 <td>delete</td>
                                 <td>update</td>
                             </tr>
@@ -70,6 +71,9 @@ class IndexController extends Controller
                                 </td>
                                 <td>
                                     <input v-model="location.longitude">
+                                </td>
+                                <td>
+                                    {{ location.distance }}
                                 </td>
                                 <td>
                                     <button v-on:click="removeLocation(location)">Remove</td>

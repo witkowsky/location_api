@@ -167,4 +167,12 @@ class Location
     {
         return $this->isHomePl;
     }
+
+    /**
+     * @return float
+     */
+    public function getDistance(): float
+    {
+        return $this->distance;
+    }
 }
