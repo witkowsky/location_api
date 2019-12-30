@@ -60,6 +60,20 @@ abstract class Controller
     }
 
     /**
+     * @param string $html
+     *
+     * @return ResponseInterface
+     */
+    protected function createHtmlResponse(string $html): ResponseInterface
+    {
+        $headers = ['Content-Type' => 'text/html'];
+        $response = new Response('php://memory', 200, $headers);
+        $response->getBody()->write($html);
+        return $response;
+    }
+
+
+    /**
      * @param array $body
      * @param int $statusCode
      * @return ResponseInterface

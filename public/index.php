@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 require_once dirname(__DIR__) . '/config/bootstrap.php';
 
+use App\Controller\IndexController;
 use App\Controller\Location\CreateController;
 use App\Controller\Location\FilterController;
 use App\Controller\Location\FindByIdController;
@@ -19,6 +20,7 @@ use function FastRoute\simpleDispatcher;
 
 //Routes
 $routes = simpleDispatcher(function (RouteCollector $r) {
+    $r->get('/', IndexController::class);
     $r->get('/location', FilterController::class);
     $r->post('/location', CreateController::class);
     $r->post('/location/{id}', UpdateController::class);

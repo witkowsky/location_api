@@ -29,3 +29,6 @@ services:
 
     App\Controller\Location\FilterController:
         public: true
+
+    App\Controller\IndexController:
+        public: true
