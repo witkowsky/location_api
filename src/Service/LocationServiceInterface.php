@@ -22,14 +22,14 @@ interface LocationServiceInterface
 
     /**
      * @param int $id
-     * @param string $name
-     * @param string $address
-     * @param float $latitude
-     * @param float $longitude
+     * @param string|null $name
+     * @param string|null $address
+     * @param float|null $latitude
+     * @param float|null $longitude
      *
      * @return void
      */
-    public function updateLocation(int $id, string $name, string $address, float $latitude, float $longitude): void;
+    public function updateLocation(int $id, ?string $name, ?string $address, ?float $latitude, ?float $longitude): void;
 
     /**
      * @param int $id

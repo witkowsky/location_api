@@ -46,10 +46,12 @@ class UpdateController extends Controller
     {
         $id = (int) $request->getAttribute('id');
         $body = $request->getParsedBody();
-        $name = $body['name'];
-        $address = $body['address'];
-        $latitude = (float) $body['latitude'];
-        $longitude = (float) $body['longitude'];
+        $name = $body['name'] ?? null;
+        $address = $body['address'] ?? null;
+        $latitude = $body['latitude'] ?? null;
+        $latitude = $latitude ? (float) $latitude : null;
+        $longitude = $body['longitude'] ?? null;
+        $longitude = $longitude ? (float) $longitude : null;
 
         $this->locationService->updateLocation($id, $name, $address, $latitude, $longitude);
 

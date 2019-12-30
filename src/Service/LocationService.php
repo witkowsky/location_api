@@ -56,19 +56,19 @@ class LocationService implements LocationServiceInterface
 
     /**
      * @param int $id
-     * @param string $name
-     * @param string $address
-     * @param float $latitude
-     * @param float $longitude
+     * @param string|null $name
+     * @param string|null $address
+     * @param float|null $latitude
+     * @param float|null $longitude
      *
      * @return void
      */
     public function updateLocation(
         int $id,
-        string $name,
-        string $address,
-        float $latitude,
-        float $longitude
+        ?string $name,
+        ?string $address,
+        ?float $latitude,
+        ?float $longitude
     ): void {
         $location = $this->repository->findById($id);
 
@@ -76,10 +76,21 @@ class LocationService implements LocationServiceInterface
             throw new InvalidArgumentException(sprintf('Location %s not found', $id));
         }
 
-        $location->setName($name);
-        $location->setAddress($address);
-        $location->setLatitude($latitude);
-        $location->setLongitude($longitude);
+        if ($name) {
+            $location->setName($name);
+        }
+
+        if ($address) {
+            $location->setAddress($address);
+        }
+
+        if ($latitude) {
+            $location->setLatitude($latitude);
+        }
+
+        if ($longitude) {
+            $location->setLongitude($longitude);
+        }
 
         $this->repository->flush($location);
 
