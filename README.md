@@ -61,4 +61,4 @@ GET /location{id}
 # Known bugs
 1. better to dont delete homepl entity (calculate distance depends on it)
 2. front can send "null" string as parameter in create (this is not validated).
-
+3. I wanted to format code with code sniffer, but php storm doesnt work with code sniffer on windows right now.
