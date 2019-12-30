@@ -47,8 +47,14 @@ var app = new Vue({
             });
         },
         createLocation: function (location) {
+            if (!location.name || !location.address || !location.latitude || !location.longitude) {
+                alert('Invalid data');
+                return;
+            }
+
             var uri = '/location';
             this.$http.post(uri, prepareFormData(location)).then(response => {
+                console.log(response.body);
                 alert('Location ' + location.name + " is created.");
                 this.createForm = {
                     name: null,
