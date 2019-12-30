@@ -26,3 +26,6 @@ services:
 
     App\Controller\Location\UpdateController:
         public: true
+
+    App\Controller\Location\FilterController:
+        public: true

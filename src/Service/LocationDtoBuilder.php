@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Entity\Location;
 use App\Dto\Location as LocationDto;
+use App\Entity\Location;
 
 /**
  * Class LocationDtoBuilder
@@ -20,7 +20,7 @@ class LocationDtoBuilder implements LocationDtoBuilderInterface
      */
     public function buildFromArray(array $locations): array
     {
-        return array_map('build', $locations);
+        return array_map(array($this, 'build'), $locations);
     }
 
     /**

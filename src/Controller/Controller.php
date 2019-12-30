@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Exception;
-use JsonSerializable;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Diactoros\Response;
@@ -33,7 +32,7 @@ abstract class Controller
     }
 
     /**
-     * @param JsonSerializable $data
+     * @param $data
      * @param int $statusCode
      *
      * @return ResponseInterface

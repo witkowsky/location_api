@@ -48,12 +48,12 @@ class LocationFinder implements LocationFinderInterface
     }
 
     /**
-     * @param string $text
-     * @param int $distance
+     * @param string|null $text
+     * @param int|null $distance
      *
      * @return Location[]
      */
-    public function findByTextAndDistance(string $text, int $distance): array
+    public function findByTextAndDistance(?string $text = null, ?int $distance = null): array
     {
         return $this->locationDtoBuilder
             ->buildFromArray($this->locationRepository->findByTextAndDistance($text, $distance));

@@ -32,14 +32,27 @@ class LocationRepository extends EntityRepository implements LocationRepositoryI
      */
     public function findByTextAndDistance(?string $text = null, ?int $distance = null): array
     {
-        $query = $this->getEntityManager()
-            ->createQuery("SELECT l FROM App\Entity\Location l WHERE (l.name LIKE :text OR l.address LIKE :text)");
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb
+            ->select('l')
+            ->from(Location::class, 'l');
 
-        $query->setParameters(array(
-            'text' => '%' . $text . '%',
-        ));
+        if ($text) {
+            $qb->andWhere(
+                $qb->expr()->orX(
+                    'l.name LIKE :text',
+                    'l.address LIKE :text'
+                )
+            );
+            $qb->setParameter('text', '%' . $text . '%');
+        }
 
-        return  $query->getResult();
+        if ($distance) {
+            $qb->andWhere('l.distance <= :distance');
+            $qb->setParameter('distance', $distance);
+        }
+
+        return $qb->getQuery()->getResult();
     }
 
     /**
