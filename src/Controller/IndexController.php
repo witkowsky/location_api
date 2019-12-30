@@ -52,7 +52,7 @@ class IndexController extends Controller
                                 <td>address</td>
                                 <td>latitude</td>
                                 <td>longitude</td>
-                                <td>distance to home.pl</td>
+                                <td>distance to home.pl in km</td>
                                 <td>delete</td>
                                 <td>update</td>
                             </tr>
