@@ -5,6 +5,7 @@ namespace App\Service;
 
 use App\Entity\Location;
 use App\Repository\LocationRepositoryInterface;
+use InvalidArgumentException;
 
 /**
  * Class LocationService
@@ -18,12 +19,21 @@ class LocationService implements LocationServiceInterface
     private $repository;
 
     /**
+     * @var DistanceCalculatorInterface
+     */
+    private $distanceCalculator;
+
+    /**
      * LocationService constructor.
      * @param LocationRepositoryInterface $repository
+     * @param DistanceCalculatorInterface $distanceCalculator
      */
-    public function __construct(LocationRepositoryInterface $repository)
-    {
+    public function __construct(
+        LocationRepositoryInterface $repository,
+        DistanceCalculatorInterface $distanceCalculator
+    ) {
         $this->repository = $repository;
+        $this->distanceCalculator = $distanceCalculator;
     }
 
     /**
@@ -38,6 +48,8 @@ class LocationService implements LocationServiceInterface
     {
         $location = new Location($name, $address, $latitude, $longitude);
         $this->repository->flush($location);
+
+        $this->updateDistance($location);
 
         return $location->getId();
     }
@@ -61,7 +73,7 @@ class LocationService implements LocationServiceInterface
         $location = $this->repository->findById($id);
 
         if (!$location) {
-            throw new \InvalidArgumentException(sprintf('Location %s not found'));
+            throw new InvalidArgumentException(sprintf('Location %s not found', $id));
         }
 
         $location->setName($name);
@@ -70,6 +82,8 @@ class LocationService implements LocationServiceInterface
         $location->setLongitude($longitude);
 
         $this->repository->flush($location);
+
+        $this->updateDistance($location);
     }
 
     /**
@@ -80,5 +94,32 @@ class LocationService implements LocationServiceInterface
     public function removeLocation(int $id): void
     {
         $this->repository->remove($id);
+    }
+
+    /**
+     * @param Location $location
+     */
+    private function updateDistance(Location $location): void
+    {
+        if ($location->isHomePl()) {
+            $homePl = $location;
+            $locations = $this->repository->findByHomePl(false);
+        } else {
+            $locations = [];
+            $locations[] = $location;
+            $homePl = current($this->repository->findByHomePl(true));
+        }
+
+        /** @var Location $homePl */
+        foreach ($locations as $location) {
+            $distance = $this->distanceCalculator->calculate(
+                $homePl->getLatitude(),
+                $homePl->getLongitude(),
+                $location->getLatitude(),
+                $location->getLongitude()
+            );
+            $location->setDistance($distance);
+            $this->repository->flush($location);
+        }
     }
 }

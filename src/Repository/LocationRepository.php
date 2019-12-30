@@ -25,12 +25,12 @@ class LocationRepository extends EntityRepository implements LocationRepositoryI
     }
 
     /**
-     * @param string $text
-     * @param int $distance
+     * @param string|null $text
+     * @param int|null $distance
      *
-     * @return Location[]
+     * @return array
      */
-    public function findByTextAndDistance(?string $text, ?int $distance): array
+    public function findByTextAndDistance(?string $text = null, ?int $distance = null): array
     {
         $query = $this->getEntityManager()
             ->createQuery("SELECT l FROM App\Entity\Location l WHERE (l.name LIKE :text OR l.address LIKE :text)");
@@ -68,5 +68,14 @@ class LocationRepository extends EntityRepository implements LocationRepositoryI
 
         $this->getEntityManager()->remove($location);
         $this->getEntityManager()->flush();
+    }
+
+    /**
+     * @param bool $isHomePl
+     * @return Location[]
+     */
+    public function findByHomePl(bool $isHomePl): array
+    {
+        return $this->findBy(['isHomePl' => $isHomePl]);
     }
 }

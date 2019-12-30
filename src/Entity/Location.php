@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\UniqueConstraint;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\LocationRepository")
- * @ORM\Table(name="locations")
+ * @ORM\Table(name="locations", uniqueConstraints={@UniqueConstraint(name="unique_name",columns={"name"})})
  */
 class Location
 {
@@ -50,6 +51,20 @@ class Location
     private $longitude;
 
     /**
+     * @var float
+     *
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $distance;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $isHomePl;
+
+    /**
      * Location constructor.
      * @param string $name
      * @param string $address
@@ -62,6 +77,7 @@ class Location
         $this->address = $address;
         $this->latitude = $latitude;
         $this->longitude = $longitude;
+        $this->isHomePl = false;
     }
 
     /**
@@ -134,5 +150,21 @@ class Location
     public function setLongitude(float $longitude): void
     {
         $this->longitude = $longitude;
+    }
+
+    /**
+     * @param float $distance
+     */
+    public function setDistance(float $distance): void
+    {
+        $this->distance = $distance;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isHomePl(): bool
+    {
+        return $this->isHomePl;
     }
 }

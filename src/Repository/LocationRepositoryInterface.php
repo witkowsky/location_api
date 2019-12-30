@@ -20,12 +20,12 @@ interface LocationRepositoryInterface
     public function findById(int $id): ?Location;
 
     /**
-     * @param string $text
-     * @param int $distance
+     * @param string|null $text
+     * @param int|null $distance
      *
-     * @return Location[]
+     * @return array
      */
-    public function findByTextAndDistance(string $text, int $distance): array;
+    public function findByTextAndDistance(?string $text = null, ?int $distance = null): array;
 
     /**
      * @param Location $location
@@ -40,4 +40,10 @@ interface LocationRepositoryInterface
      * @return void
      */
     public function remove(int $id): void;
+
+    /**
+     * @param bool $isHomePl
+     * @return Location[]
+     */
+    public function findByHomePl(bool $isHomePl): array;
 }
