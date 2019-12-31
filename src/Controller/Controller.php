@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Exception;
+use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Diactoros\Response;
@@ -27,7 +28,7 @@ abstract class Controller
         try {
             return $this->action($request);
         } catch (Exception $exception) {
-            return $this->createErrorApiResponse($exception->getMessage(),500);
+            return $this->createErrorApiResponse($exception->getMessage(),200);
         }
     }
 
@@ -84,5 +85,18 @@ abstract class Controller
         $response = new Response('php://memory', $statusCode, $headers);
         $response->getBody()->write(json_encode($body));
         return $response;
+    }
+
+    /**
+     * @param $parameter
+     * @param string $name
+     *
+     * @return void
+     */
+    protected function checkParameter($parameter, string $name): void
+    {
+        if (!$parameter) {
+            throw new InvalidArgumentException(sprintf('Missing parameter %s', $name));
+        }
     }
 }

@@ -3,9 +3,27 @@ Vue.use(VueResource);
 function prepareFormData(object) {
     var formData = new FormData();
     for (var key in object ) {
-        formData.append(key, object[key]);
+        if (object[key] !== null) {
+            formData.append(key, object[key]);
+        }
     }
     return formData;
+}
+
+function handleSuccessResponse(action) {
+    return response => {
+        if (response.body.error) {
+            alert('Error: ' + response.body.error);
+            return;
+        }
+
+        action(response);
+    }
+}
+
+function handleError(response) {
+    alert('Error');
+    console.log(response);
 }
 
 var app = new Vue({
@@ -27,43 +45,56 @@ var app = new Vue({
     methods: {
         filterLocations: function () {
             var uri = '/location?text=' + this.filter.text + '&distance=' + this.filter.distance;
-            this.$http.get(uri).then(response => {
-                this.locations = response.body.data;
-            });
+            this.$http.get(uri).then(
+                handleSuccessResponse(response => {
+                    this.locations = response.body.data;
+                }),
+                handleError
+            );
         },
         removeLocation: function (location) {
             var uri = '/location/' + location.id;
-            this.$http.delete(uri).then(response => {
-                alert('Location ' + location.name + " is removed.");
-                this.filterLocations();
-            });
+            this.$http.delete(uri).then(
+                handleSuccessResponse(response => {
+                    alert('Location ' + location.name + " is removed.");
+                    this.filterLocations();
+                }),
+                handleError
+            );
         },
         updateLocation: function (location) {
             var uri = '/location/' + location.id;
 
-            this.$http.post(uri, prepareFormData(location)).then(response => {
-                alert('Location ' + location.name + " is updated.");
-                this.filterLocations();
-            });
+            this.$http.post(uri, prepareFormData(location)).then(
+                handleSuccessResponse(response => {
+                    alert('Location ' + location.name + " is updated.");
+                    this.filterLocations();
+                }),
+                handleError
+            );
         },
         createLocation: function (location) {
-            if (!location.name || !location.address || !location.latitude || !location.longitude) {
-                alert('Invalid data');
+            if (location.name === null
+                || location.address === null
+                || location.latitude === null
+                || location.longitude === null
+            ) {
+                alert('Invalid data. Missing param.');
                 return;
             }
 
             var uri = '/location';
-            this.$http.post(uri, prepareFormData(location)).then(response => {
-                console.log(response.body);
-                alert('Location ' + location.name + " is created.");
-                this.createForm = {
-                    name: null,
-                    address: null,
-                    latitude: null,
-                    longitude: null
-                };
-                this.filterLocations();
-            });
+            this.$http.post(uri, prepareFormData(location)).then(
+                handleSuccessResponse(response => {
+                    alert('Location ' + location.name + " is created.");
+                    this.createForm = {
+                        name: null,
+                        address: null,
+                        latitude: null,
+                        longitude: null
+                    };
+                    this.filterLocations();
+                }), handleError);
         }
     }
 });

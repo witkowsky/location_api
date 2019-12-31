@@ -35,12 +35,22 @@ class CreateController extends Controller
     public function action(ServerRequestInterface $request): ResponseInterface
     {
         $body = $request->getParsedBody();
-        $name = $body['name'];
-        $address = $body['address'];
-        $latitude = (float) $body['latitude'];
-        $longitude = (float) $body['longitude'];
+        $name = $body['name'] ?? null;
+        $address = $body['address'] ?? null;
+        $latitude =  $body['latitude'] ?? null;
+        $longitude =  $body['longitude'] ?? null;
 
-        $id = $this->locationService->createLocation($name, $address, $latitude, $longitude);
+        $this->checkParameter($name, 'name');
+        $this->checkParameter($address, 'address');
+        $this->checkParameter($latitude, 'latitude');
+        $this->checkParameter($longitude, 'longitude');
+
+        $id = $this->locationService->createLocation(
+            (string) $name,
+            (string) $address,
+            (float) $latitude,
+            (float) $longitude
+        );
 
         return $this->createApiResponse(['id' => $id], 200);
     }
