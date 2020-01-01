@@ -1,6 +1,6 @@
 # Installation
 ```sh
-$ composer intstall
+$ composer install
 ```
 # Database
 create database schema and fill it
